@@ -6,7 +6,6 @@ from spherov2 import scanner
 from spherov2.sphero_edu import EventType, SpheroEduAPI
 from spherov2.types import Color
 import random
-import csv
 
 
 # Defining the different parameters
@@ -14,7 +13,7 @@ import csv
 epsilon = 0.7
 epochs = 10000
 max_steps = 100
-alpha = 0.55
+alpha = 0.85
 gamma = 0.95
 
 
@@ -27,7 +26,6 @@ start_pos = (0,0)
 goal_pos = (5,5)
 current_dist = 0
 last_dist = 10000
-time_step = 0
 
 # initialise Q table with zeroes
 
@@ -152,7 +150,7 @@ def get_distance(x1, y1, x2, y2):
 def moveToNode(api,nodeX,nodeY):
     
     global currentPosX, currentPosY, obsMap
-    
+
     updateCurrentPos(api)
     timeCount = 0
     x = api.get_location()['x']
@@ -200,19 +198,8 @@ def update(state, state2, reward, action, action2):
 
 def main():
     
-    global qtable_path, time_step
+    global qtable_path
     
-    with open("store.txt",'r') as f: #open a file in the same folder
-        a = f.readlines()            #read from file to variable a
-        
-    logStep = int(a[0]) 
-    logStep += 1
-    log_path = "qlearningLog" + str(logStep) + ".txt" 
-    
-    with open("store.txt",'w') as f: #open a file in the same folder
-        f.write(str(logStep))   
-    
-
     toys = scanner.find_toys(toy_names=[ROBOT_ID])
     with SpheroEduAPI(toys[0]) as droid:
         
@@ -227,38 +214,10 @@ def main():
 #       matrixPlot = ax.imshow(obsMap, cmap = "viridis", norm="linear")
                 
         
-        log = open(log_path, 'w')
-        log.write("time, x, y, action, reward \n")
+        
         import_Qtable()
         moveToNode(droid,start_pos[0],start_pos[1])
-        state1 = state_to_index(currentPosX, currentPosY) # starts from 0,0 coords
-        action1 = choose_action(state1)
-
-        while state1 != goal_state:     
-            data = str(time_step) + ", " + str(currentPosX) + ", " + str(currentPosY) + ", " + str(action1) + ", "               
-            reward = execute_action(action1,droid)
-            data += str(reward) + "\n"
-            log.write(data) 
-            updateCurrentPos(droid)
-            
-            state2 = state_to_index(currentPosX, currentPosY)
-            
-            if state2 > 35: 
-                print("State 2 is larger then the size of the q table: " + str(state2) + "   X: " + str(currentPosX) + "  Y: " + str(currentPosY))                
-            
-            action2 = choose_action(state2)                                 
-            
-            update(state1, state2, reward, action1, action2)
-
-            state1 = state2
-            
-            action1 = action2
-                        
-            print(str(Q_table))
-            np.savetxt(qtable_path,Q_table,delimiter = ",")
-            time_step += 1
-            
-        print("Epoch finished with time: " + str(time.time()-start_time) + "    in " + str(time_step) + " steps")
+        moveToNode(droid,0,3)
             
                                 
                 

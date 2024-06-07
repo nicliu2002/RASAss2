@@ -1,7 +1,6 @@
 import numpy as np
 import gym
 
-env = gym.make("Ant-v4")
 
 #Defining the different parameters
 epsilon = 0.9

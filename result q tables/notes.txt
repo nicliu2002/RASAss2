@@ -1,0 +1,3 @@
+qtable test 3:
+
+worked at 148s in q table test 3, even faster for iter 2, working in 68s, 3rd iter resulted in it running around everywhere
