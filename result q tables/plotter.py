@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the CSV without headers
+<<<<<<< HEAD
 q_table_path = r'C:\Users\nicli\Documents\Algorithms for RAS\Assignment 2\result q tables\Qtabletest4result2.csv'
+=======
+q_table_path = r"C:\Users\nicli\Documents\Algorithms for RAS\Assignment 2\result q tables\Qtabletest4result10.csv"
+>>>>>>> e852bafe8163a674c39a012dfbbc3f10e6fede53
 q_table = pd.read_csv(q_table_path, header=None)
 
 # Assign columns manually
