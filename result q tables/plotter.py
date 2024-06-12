@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the CSV without headers
-q_table_path = 'C:/Users/nicli/Documents/RASAss2/result q tables/Qtabletest4Iter1.csv'
+q_table_path = r"C:\Users\nicli\Documents\Algorithms for RAS\Assignment 2\result q tables\Qtabletest4result10.csv"
 q_table = pd.read_csv(q_table_path, header=None)
 
 # Assign columns manually
-q_table.columns = ['up', 'down', 'right', 'left']
+q_table.columns = ['right', 'left', 'up', 'down']
 
 # Reindex to the 6x6 grid
 q_table.index = [(i // 6, i % 6) for i in range(len(q_table))]

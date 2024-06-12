@@ -11,10 +11,9 @@ import csv
 
 # Defining the different parameters
 
-epsilon = 0.7
-epochs = 10000
+epsilon = 0.001
 max_steps = 100
-alpha = 0.55
+alpha = 0.01
 gamma = 0.95
 
 
@@ -36,7 +35,7 @@ Q_table = np.zeros((n_states,n_actions))
 
 # robot parameters:
 
-ROBOT_ID = "SB-5929"
+ROBOT_ID = "SB-C299"
 scaleParam = 25
 
 # observation map:
