@@ -1,0 +1,63 @@
+INITIALISE Q_Table from file OR Q_Table = matrix[states,actions]
+
+SET reward = {
+    "blocked": -10,
+    "closer": 3,
+    "further" : -5,
+    "goal" : 25,
+    "out of bounds": -5
+}
+
+SET learning rate = alpha, discount factor = gamma, exploration rate = epsilon
+
+FUNCTION execute_action(action)
+
+    target = action
+
+    IF target within grid_limits:
+        move to target
+        IF move IS successful:
+            IF current_location IS goal_state:
+                RETURN reward["goal"]
+            ELSE IF current_location IS closer:
+                RETURN reward["closer"]
+            ELSE IF current_location IS further:
+                RETURN reward["further"]
+        ELSE IF move NOT successful:
+            RETURN reward["blocked"]
+    ELSE:
+        RETURN reward["out of bounds"]
+
+
+
+FUNCTION choose_action(state):
+
+    SET action_list = ["right","left","up","down"]
+
+    IF random(0,1) < epsilon:
+        RETURN action_list[random]
+    ELSE:
+        RETURN action_list[max(Q_Table[state, :])]
+
+
+
+WHILE (total_steps < max_steps):
+
+    state s1 = current_location
+    action a1 = choose_action(s1)
+
+    WHILE(s1 != goal_state):
+        
+        r = execute_action(a1)
+        s2 = current_state
+        a2 = choose_action(s2) 
+
+        UPDATE Q-value for the state-action pair (s, a):
+            Q_Table(s1, a1) = Q_Table(s1, a1) + alpha * (r + gamma * max(Q_Table(s2, a2)) - Q_Table(s1, a1))
+        
+        s1 = s2
+        a1 = a2
+
+    SAVE Q_Table to file
+    
+ 
